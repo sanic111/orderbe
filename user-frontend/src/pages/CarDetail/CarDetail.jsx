@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import axios from '../../axios';
+import API from '../../axios';
 import './CarDetail.css';
+
+import { useSelector } from 'react-redux';
 
 const CarDetail = () => {
     const navigate = useNavigate();
-    const { id: carId } = useParams();
+    const { id } = useParams();
+    console.log('carId from params:', id);
+    const carId = id; // Đảm bảo carId luôn có giá trị
+    const user = useSelector((state) => state.auth.user);
     const [carInfo, setCarInfo] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -14,15 +20,23 @@ const CarDetail = () => {
     const [selectedVariant, setSelectedVariant] = useState(null);
 
     useEffect(() => {
+        console.log('carId in useEffect:', carId);
         const fetchCarInfo = async () => {
+            if (!carId) {
+                console.error('carId is undefined in fetchCarInfo');
+                setError('Không thể tải thông tin xe. ID xe không hợp lệ.');
+                setIsLoading(false);
+                return;
+            }
             try {
-                const response = await axios.get(`car/detail/${carId}`);
+                console.log('Fetching car info for carId:', carId);
+                const response = await API.get(`car/detail/${carId}`);
+                console.log('API Response:', response);
                 setCarInfo(response.data);
-                console.log(response.data);
             } catch (err) {
-                setError('Error fetching car information');
+                console.error('Error fetching car info:', err);
+                setError('Lỗi khi tải thông tin xe');
                 navigate('/404');
-                console.error(err.response.data.error);
             } finally {
                 setIsLoading(false);
             }
@@ -30,8 +44,10 @@ const CarDetail = () => {
 
         if (carId) {
             fetchCarInfo();
+        } else {
+            console.error('carId is undefined in useEffect');
         }
-    }, [carId]);
+    }, [carId, navigate]);
 
     const prevImage = () => {
         setCurrentImageIndex((prevIndex) =>
@@ -45,32 +61,89 @@ const CarDetail = () => {
         );
     };
 
-    if (isLoading) {
-        return <div className="text-center py-8">Loading...</div>;
-    }
-
-    if (error) {
-        return <div className="text-center py-8 text-red-600">{error}</div>;
-    }
-
-    if (!carInfo) {
-        return (
-            <div className="text-center py-8">No car information available</div>
-        );
-    }
-
+    const fetchCarInfo = async () => {
+        if (!carId) {
+            console.error('carId is undefined');
+            setError('Không thể tải thông tin xe. ID xe không hợp lệ.');
+            setIsLoading(false);
+            return;
+        }
+        setIsLoading(true);
+        try {
+            const response = await API.get(`car/detail/${carId}`);
+            console.log('API Response:', response); // Log the entire response
+            if (response && response.data) {
+                setCarInfo(response.data);
+            } else {
+                throw new Error('Invalid response structure');
+            }
+        } catch (error) {
+            console.error('Error fetching car info:', error);
+            setError('Failed to load car information. Please try again later.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
     const handleRequestTestDrive = () => {
-        localStorage.setItem('carInfo', JSON.stringify(carInfo));
+        localStorage.setItem('selectedCar', JSON.stringify(carInfo));
         navigate('/test-drive');
     };
     // Lưu thông tin xe từ trang này rồi truyền sang trang orders để giảm thiểu request
-    const handleMakeOrder = () => {
-        const carData = {
-            ...carInfo,
-            selectedImageIndex: currentImageIndex
-        };
-        localStorage.setItem('carInfo', JSON.stringify(carData));
-        navigate('/orders');
+    const handleMakeOrder = async () => {
+        try {
+            if (!user) {
+                toast.error("Vui lòng đăng nhập để đặt hàng", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined
+                });
+                return;
+            }
+
+            console.log('Car Info:', carInfo); // Log the entire carInfo object
+            const showroomId = carInfo?.showroom_id;
+            console.log('Showroom ID:', showroomId); // Debugging line
+
+            if (!showroomId) {
+                throw new Error('Invalid showroom ID');
+            }
+
+            const response = await API.post('orders', {
+                customer_id: user.id,
+                car_id: carInfo.id,
+                payment_price: carInfo.price,
+                total_price: carInfo.price,
+                order_status: 'pending',
+                showroom_id: showroomId,
+            });
+
+            if (response.data && response.data.id) {
+                await API.post('orders-details', {
+                    order_id: response.data.id,
+                    car_id: carInfo.id,
+                    quantity: 1,
+                    price: carInfo.price
+                });
+
+                navigate(`/orders-confirmation/${response.data.id}`);
+            } else {
+                throw new Error('Không thể tạo đơn hàng');
+            }
+        } catch (error) {
+            console.error('Lỗi khi tạo đơn hàng:', error.response?.data || error.message);
+            if (error.response?.status === 404) {
+                toast.error("Không tìm thấy endpoint tạo đơn hàng. Vui lòng kiểm tra lại cấu hình API.");
+            } else if (error.response?.status === 401) {
+                toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+                // Thêm logic để đăng xuất người dùng và chuyển hướng đến trang đăng nhập
+            } else {
+                toast.error("Có lỗi xảy ra khi tạo đơn hàng. Vui lòng thử lại sau.");
+            }
+        }
     };
 
     const decreaseQuantity = () => {
@@ -125,8 +198,8 @@ const CarDetail = () => {
                         <h2>{carInfo ? `${carInfo.brand.name} ${carInfo.model}` : 'Car Name'}</h2>
                         <div className="d-flex align-items-center mb-2">
                             <span className="me-2">4.4 ★★★★☆</span>
-                            <span className="me-2">1.8k Đánh Giá</span>
-                            <span>5.7k Đã Bán</span>
+                            <span className="me-2">a Đánh Giá</span>
+                            <span>b Đã Bán</span>
                         </div>
                         <div className="price-container">
                             <span className="original-price">

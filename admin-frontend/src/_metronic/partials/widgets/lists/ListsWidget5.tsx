@@ -1,13 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
-import {KTIcon} from '../../../helpers'
-import {Dropdown1} from '../../content/dropdown/Dropdown1'
+import { KTIcon } from '../../../helpers'
+import { Dropdown1 } from '../../content/dropdown/Dropdown1'
 
 type Props = {
   className: string
 }
 
-const ListsWidget5: React.FC<Props> = ({className}) => {
+const ListsWidget5: React.FC<Props> = ({ className }) => {
   return (
     <div className={`card ${className}`}>
       {/* begin::Header */}
@@ -120,7 +120,7 @@ const ListsWidget5: React.FC<Props> = ({className}) => {
             {/* end::Badge */}
             {/* begin::Desc */}
             <div className='timeline-content fw-semibold text-gray-800 ps-3'>
-              New order placed
+              New orders placed
               <a href='#' className='text-primary'>
                 #XF-2356
               </a>
@@ -158,7 +158,7 @@ const ListsWidget5: React.FC<Props> = ({className}) => {
             {/* end::Badge */}
             {/* begin::Desc */}
             <div className='timeline-content fw-semibold text-gray-800 ps-3'>
-              New order placed
+              New orders placed
               <a href='#' className='text-primary'>
                 #XF-2356
               </a>
@@ -192,4 +192,4 @@ const ListsWidget5: React.FC<Props> = ({className}) => {
   )
 }
 
-export {ListsWidget5}
+export { ListsWidget5 }

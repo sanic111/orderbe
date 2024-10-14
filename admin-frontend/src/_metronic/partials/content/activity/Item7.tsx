@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import {FC} from 'react'
-import {KTIcon, toAbsoluteUrl} from '../../../helpers'
+import { FC } from 'react'
+import { KTIcon, toAbsoluteUrl } from '../../../helpers'
 
 const Item7: FC = () => {
   return (
@@ -15,7 +15,7 @@ const Item7: FC = () => {
 
       <div className='timeline-content mb-10 mt-n1'>
         <div className='pe-3 mb-5'>
-          <div className='fs-5 fw-bold mb-2'>You have received a new order:</div>
+          <div className='fs-5 fw-bold mb-2'>You have received a new orders:</div>
 
           <div className='d-flex align-items-center mt-1 fs-6'>
             <div className='text-muted me-2 fs-7'>Placed at 5:05 AM by</div>
@@ -56,4 +56,4 @@ const Item7: FC = () => {
   )
 }
 
-export {Item7}
+export { Item7 }

@@ -15,7 +15,7 @@ import {
   updateStaffAvatar,
 } from "../../controllers/management/StaffController.js";
 import { queryRoles } from "../../controllers/management/RoleController.js";
-import { queryShowrooms } from "../../controllers/management/ShowroomController.js";
+import { queryShowroom } from "../../controllers/management/ShowroomController.js";
 import {
   querySettings,
   updateSettings,
@@ -109,8 +109,8 @@ roleRoute.get("/", queryRoles);
 router.use("/roles", verifyStaffToken(["Director"]), roleRoute);
 
 const showroomRoute = express.Router();
-showroomRoute.get("/", queryShowrooms);
-router.use("/showrooms", verifyStaffToken(["Director"]), showroomRoute);
+showroomRoute.get("/", queryShowroom);
+router.use("/showroom", verifyStaffToken(["Director"]), showroomRoute);
 
 const settingsRoute = express.Router();
 settingsRoute.get("/", querySettings);

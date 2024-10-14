@@ -1,6 +1,7 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import React, { useEffect, createContext, useContext, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { setLogin as setUser, setLogout as logout } from './reduxStore/authSlice';
 import Home from './pages/HomePage/Home';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
@@ -12,51 +13,97 @@ import CarDetail from './pages/CarDetail/CarDetail';
 import TestDrive from './pages/TestDrive/TestDrive';
 import Contacts from './pages/Contacts/Contacts';
 import CarLoan from './pages/CarLoan/CarLoan';
+import OrderConfirmation from './pages/OrderConfirmation/OrderConfirmation';
+import axios from './axios';
+
+const AuthContext = createContext();
+
+export const useAuth = () => useContext(AuthContext);
+
+const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            axios.get('/user', {
+                headers: { Authorization: `Bearer ${token}` }
+            }).then(response => {
+                setUser(response.data);
+            }).catch(error => {
+                console.error('Error fetching user data:', error);
+                localStorage.removeItem('token');
+            });
+        }
+    }, []);
+
+    const login = (userData, token) => {
+        setUser(userData);
+        localStorage.setItem('token', token);
+    };
+
+    const logout = () => {
+        setUser(null);
+        localStorage.removeItem('token');
+    };
+
+    return (
+        <AuthContext.Provider value={{ user, login, logout }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
 
 function App() {
-    const token = useSelector((state) => state.auth.token);
+    const user = useSelector((state) => state.auth.user); // Use user from Redux store
     const location = useLocation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // Các đường dẫn muốn ẩn Navbar
     const hideNavbarPaths = ['/login', '/register'];
 
+    // Remove the useEffect that fetches user data
+
     return (
-        <div>
-            <Header />
-            {/* Chỉ hiển thị Navbar nếu không phải trang login/register */}
-            {!hideNavbarPaths.includes(location.pathname) && (
-                <>
-                    <Navbar />
-                </>
-            )}
+        <AuthProvider>
+            <div>
+                <Header />
+                {/* Chỉ hiển thị Navbar nếu không phải trang login/register */}
+                {!hideNavbarPaths.includes(location.pathname) && (
+                    <>
+                        <Navbar />
+                    </>
+                )}
 
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route
-                    path="/login"
-                    element={!token ? <Login /> : <Navigate to="/" />}
-                />
-                <Route
-                    path="/register"
-                    element={!token ? <Register /> : <Navigate to="/" />}
-                />
-                <Route
-                    path="/profile"
-                    element={token ? <UserProfile /> : <Navigate to="/" />}
-                />
-                <Route path="/car/detail/:id" element={<CarDetail />} />
-                <Route path="/test-drive" element={<TestDrive />} />
-                <Route path="/contacts" element={<Contacts />} />
-                <Route path="/car-loan" element={<CarLoan />} />
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route
+                        path="/login"
+                        element={!user ? <Login /> : <Navigate to="/" />} // Use user to check login status
+                    />
+                    <Route
+                        path="/register"
+                        element={!user ? <Register /> : <Navigate to="/" />} // Use user to check login status
+                    />
+                    <Route
+                        path="/profile"
+                        element={user ? <UserProfile /> : <Navigate to="/" />} // Use user to check login status
+                    />
+                    <Route path="/car/detail/:id" element={<CarDetail />} />
+                    <Route path="/test-drive" element={<TestDrive />} />
+                    <Route path="/contacts" element={<Contacts />} />
+                    <Route path="/car-loan" element={<CarLoan />} />
+                    <Route path="/orders-confirmation/:orderId" element={<OrderConfirmation />} />
 
-                <Route path="*" element={<NotFound />} />
-                <Route path="/404" element={<NotFound />} />
-            </Routes>
-            <Footer />
-        </div>
+                    <Route path="*" element={<NotFound />} />
+                    <Route path="/404" element={<NotFound />} />
+                </Routes>
+                <Footer />
+            </div>
+        </AuthProvider>
     );
 }
-
 const NotFound = () => {
     return (
         <div className="not-found">

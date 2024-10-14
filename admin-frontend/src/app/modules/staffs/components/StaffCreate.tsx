@@ -1,9 +1,9 @@
-import React, {ChangeEvent, FC, useState} from "react";
-import {createStaff, getRoles, getShowrooms} from "../core/requests";
-import {ShowroomModel, Staff} from "../core/models";
-import {toast} from "react-toastify";
-import {RoleModel} from "../../auth";
-import {useNavigate} from "react-router-dom";
+import React, { ChangeEvent, FC, useState } from "react";
+import { createStaff, getRoles, getShowroom } from "../core/requests";
+import { ShowroomModel, Staff } from "../core/models";
+import { toast } from "react-toastify";
+import { RoleModel } from "../../auth";
+import { useNavigate } from "react-router-dom";
 
 type Props = {};
 export const StaffCreate: FC<Props> = () => {
@@ -19,15 +19,15 @@ export const StaffCreate: FC<Props> = () => {
     });
 
     const [roles, setRoles] = useState<RoleModel[]>([]);
-    const [showrooms, setShowrooms] = useState<ShowroomModel[]>([]);
+    const [showroom, setShowroom] = useState<ShowroomModel[]>([]);
 
-    // Fetch roles and showrooms when component mounts
+    // Fetch roles and showroom when component mounts
     React.useEffect(() => {
         // Fetch roles
         getRoles().then((response) => setRoles(response.data || []));
 
-        // Fetch showrooms
-        getShowrooms().then((response) => setShowrooms(response.data || []));
+        // Fetch showroom
+        getShowroom().then((response) => setShowroom(response.data || []));
     }, []);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +48,7 @@ export const StaffCreate: FC<Props> = () => {
 
     const handleShowroomChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const selectedShowroomId = Number(e.target.value);
-        //const selectedShowroom = showrooms.find((showroom) => showroom.id === selectedShowroomId);
+        //const selectedShowroom = showroom.find((showroom) => showroom.id === selectedShowroomId);
         setStaff({
             ...staff,
             showroom_id: selectedShowroomId || 0
@@ -67,7 +67,7 @@ export const StaffCreate: FC<Props> = () => {
                     draggable: true,
                     progress: undefined
                 });
-                navigate('/staffs', {state: {reload: true}});
+                navigate('/staffs', { state: { reload: true } });
             })
             .catch((error) => {
                 const errorMessage = error && error.response && error.response.data && error.response.data.error
@@ -177,7 +177,7 @@ export const StaffCreate: FC<Props> = () => {
                                 onChange={handleShowroomChange}
                             >
                                 <option value=''>Chọn showroom</option>
-                                {showrooms.map((showroom) => (
+                                {showroom.map((showroom) => (
                                     <option key={showroom.id} value={showroom.id}>
                                         {showroom.name}
                                     </option>

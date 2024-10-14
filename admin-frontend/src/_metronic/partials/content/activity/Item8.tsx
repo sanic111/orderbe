@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import {FC} from 'react'
-import {KTIcon} from '../../../helpers'
+import { FC } from 'react'
+import { KTIcon } from '../../../helpers'
 
 const Item8: FC = () => {
   return (
@@ -16,7 +16,7 @@ const Item8: FC = () => {
       <div className='timeline-content mt-n1'>
         <div className='pe-3 mb-5'>
           <div className='fs-5 fw-bold mb-2'>
-            New order{' '}
+            New orders{' '}
             <a href='#' className='text-primary fw-bolder me-1'>
               #67890
             </a>
@@ -36,4 +36,4 @@ const Item8: FC = () => {
   )
 }
 
-export {Item8}
+export { Item8 }

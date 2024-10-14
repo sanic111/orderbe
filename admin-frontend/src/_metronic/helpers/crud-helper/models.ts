@@ -1,17 +1,17 @@
-import {Dispatch, SetStateAction} from 'react'
-import {QueryResponse} from "../../../app/utils/model/models";
+import { Dispatch, SetStateAction } from 'react'
+import { QueryResponse } from "../../../app/utils/model/models";
 
 export type ID = undefined | null | number
 
 export type PaginationState = {
   page: number
   items_per_page: 10 | 30 | 50 | 100
-  links?: Array<{label: string; active: boolean; url: string | null; page: number | null}>
+  links?: Array<{ label: string; active: boolean; url: string | null; page: number | null }>
 }
 
 export type SortState = {
   sort?: string
-  order?: 'asc' | 'desc'
+  orders?: 'asc' | 'desc'
 }
 
 export type FilterState = {
@@ -47,7 +47,7 @@ export const initialQueryState: QueryState = {
 
 export const initialQueryRequest: QueryRequestContextProps = {
   state: initialQueryState,
-  updateState: () => {},
+  updateState: () => { },
 }
 
 export type QueryResponseContextProps<T> = {
@@ -57,7 +57,7 @@ export type QueryResponseContextProps<T> = {
   query: string
 }
 
-export const initialQueryResponse = {refetch: () => {}, isLoading: false, query: ''}
+export const initialQueryResponse = { refetch: () => { }, isLoading: false, query: '' }
 
 export type ListViewContextProps = {
   selected: Array<ID>
@@ -76,11 +76,11 @@ export type ListViewContextProps = {
 
 export const initialListView: ListViewContextProps = {
   selected: [],
-  onSelect: () => {},
-  onSelectAll: () => {},
+  onSelect: () => { },
+  onSelectAll: () => { },
   //onDelete: async () => Promise.resolve({} as QueryResponse), // Returning a mock QueryResponse
-  clearSelected: () => {},
-  setItemIdForUpdate: () => {},
+  clearSelected: () => { },
+  setItemIdForUpdate: () => { },
   isAllSelected: false,
   disabled: false,
 }

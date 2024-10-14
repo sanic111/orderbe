@@ -262,7 +262,7 @@ export const queryStaff = async (req, res) => {
   const perPage = parseInt(req.query.items_per_page) || 20;
   const currentPage = parseInt(req.query.page) || 1;
   const sortColumn = req.query.sort || "id";
-  const sortOrder = req.query.order || "desc";
+  const sortOrder = req.query.orders || "desc";
   const searchQuery = req.query.search || "";
 
   try {
@@ -298,7 +298,7 @@ export const queryStaff = async (req, res) => {
           attributes: ["id", "name"],
         },
       ],
-      order: [[sortColumn, sortOrder.toUpperCase()]],
+      orders: [[sortColumn, sortOrder.toUpperCase()]],
     });
 
     const pagination = {
@@ -306,9 +306,8 @@ export const queryStaff = async (req, res) => {
       first_page_url: `${req.protocol}://${req.get("host")}${req.path}?page=1`,
       from: (currentPage - 1) * perPage + 1,
       last_page: Math.ceil(totalStaff / perPage),
-      last_page_url: `${req.protocol}://${req.get("host")}${
-        req.path
-      }?page=${Math.ceil(totalStaff / perPage)}`,
+      last_page_url: `${req.protocol}://${req.get("host")}${req.path
+        }?page=${Math.ceil(totalStaff / perPage)}`,
       links: generatePaginationLinks(
         req,
         currentPage,
@@ -316,17 +315,15 @@ export const queryStaff = async (req, res) => {
       ),
       next_page_url:
         currentPage < Math.ceil(totalStaff / perPage)
-          ? `${req.protocol}://${req.get("host")}${req.path}?page=${
-              currentPage + 1
-            }`
+          ? `${req.protocol}://${req.get("host")}${req.path}?page=${currentPage + 1
+          }`
           : null,
       path: `${req.protocol}://${req.get("host")}${req.path}`,
       per_page: perPage.toString(),
       prev_page_url:
         currentPage > 1
-          ? `${req.protocol}://${req.get("host")}${req.path}?page=${
-              currentPage - 1
-            }`
+          ? `${req.protocol}://${req.get("host")}${req.path}?page=${currentPage - 1
+          }`
           : null,
       to: currentPage * perPage,
       total: totalStaff,

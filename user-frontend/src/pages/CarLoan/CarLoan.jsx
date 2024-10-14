@@ -4,7 +4,7 @@ import axios from '../../axios';
 import './CarLoan.css';
 import { numberToWords } from '../../utils/numberToWords';
 import FlashyButton from './FlashyButton';
-
+import { toast } from 'react-toastify';
 const CarLoanPage = () => {
     const { t } = useTranslation();
     const [loanAmount, setLoanAmount] = useState('');
@@ -109,7 +109,7 @@ const CarLoanPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('/car-loan-registration', {
+            await axios.post('/api/car-loan-registration', {
                 ...formData,
                 registrationType,
                 loanAmount,
@@ -117,12 +117,28 @@ const CarLoanPage = () => {
                 interestRate,
                 paymentType,
             });
-            alert(t('REGISTRATION_SUCCESS'));
+            toast.success("Tạo bài viết mới thành công!", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined
+            });
             setRegistrationType('');
             setFormData({ fullname: '', email: '', phone: '', address: '' });
         } catch (error) {
             console.error('Error submitting registration:', error);
-            alert(t('REGISTRATION_ERROR'));
+            toast.error(t('REGISTRATION_ERROR'), {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined
+            });
         }
     };
 
@@ -138,22 +154,23 @@ const CarLoanPage = () => {
 
     // Hàm xử lý thay đổi lãi suất
     const handleInterestRateChange = (e) => {
-        let value = parseInt(e.target.value, 10);
+        let value = parseFloat(e.target.value);
         if (isNaN(value)) {
             value = 5; // Giá trị mặc định nếu input không hợp lệ
         } else {
-            // Làm tròn đến bội số của 5 gần nhất
-            value = Math.round(value / 5) * 5;
+            // Giới hạn giá trị trong khoảng từ 5% đến 20%
+            value = Math.max(5, Math.min(20, value));
         }
-        // Giới hạn giá trị trong khoảng từ 0 đến 100
-        value = Math.max(0, Math.min(100, value));
         setInterestRate(value);
     };
+
     // Hàm xử lý thay đổi thời hạn vay
     const handleLoanTermChange = (e) => {
         let value = parseInt(e.target.value, 10);
         if (isNaN(value) || value < 1) {
-            value = 1; // Giá trị tối thiểu là 1 năm
+            value = 1; //Giá trị tối thiểu là 1 năm
+        } else if (value > 10) {
+            value = 10; // Giá trị tối đa là 10 năm
         }
         setLoanTerm(value);
     };

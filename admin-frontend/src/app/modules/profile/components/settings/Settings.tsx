@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
-import {defaultSettings, ISettings} from './SettingsModel'
+import React, { useState } from 'react'
+import { defaultSettings, ISettings } from './SettingsModel'
 
 export function Settings() {
   const [data, setData] = useState<ISettings>(defaultSettings)
   const updateData = (fieldsToUpdate: Partial<ISettings>) => {
-    const updatedData = {...data, ...fieldsToUpdate}
+    const updatedData = { ...data, ...fieldsToUpdate }
     setData(updatedData)
   }
 
@@ -178,7 +178,7 @@ export function Settings() {
                   }
                 />
                 <label className='form-check-label fw-bold text-gray-600' htmlFor='kt_checkbox_4'>
-                  Upon new order
+                  Upon new orders
                 </label>
               </div>
               <div className='form-check form-check-custom form-check-solid mb-3'>

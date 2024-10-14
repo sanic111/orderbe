@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
-import {KTIcon} from '../../../helpers'
+import { KTIcon } from '../../../helpers'
 
 type Props = {
   className: string
 }
 
-const TablesWidget13: React.FC<Props> = ({className}) => {
+const TablesWidget13: React.FC<Props> = ({ className }) => {
   return (
     <div className={`card ${className}`}>
       {/* begin::Header */}
@@ -138,7 +138,7 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
                     />
                   </div>
                 </th>
-                <th className='min-w-150px'>Order Id</th>
+                <th className='min-w-150px'>Orders Id</th>
                 <th className='min-w-140px'>Country</th>
                 <th className='min-w-120px'>Date</th>
                 <th className='min-w-120px'>Company</th>
@@ -425,4 +425,4 @@ const TablesWidget13: React.FC<Props> = ({className}) => {
   )
 }
 
-export {TablesWidget13}
+export { TablesWidget13 }

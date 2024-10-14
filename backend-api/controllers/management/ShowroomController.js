@@ -1,8 +1,8 @@
 import Showroom from "../../models/Showroom.js";
 
-export const queryShowrooms = async (req, res) => {
-  const showrooms = await Showroom.findAll({});
+export const queryShowroom = async (req, res) => {
+  const showroom = await Showroom.findAll({});
   res.json({
-    data: showrooms,
+    data: showroom,
   });
 };

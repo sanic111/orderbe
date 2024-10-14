@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import {useEffect} from 'react'
-import {Outlet, Link} from 'react-router-dom'
-import {toAbsoluteUrl} from '../../../_metronic/helpers'
+import { useEffect } from 'react'
+import { Outlet, Link } from 'react-router-dom'
+import { toAbsoluteUrl } from '../../../_metronic/helpers'
 
 const AuthLayout = () => {
   useEffect(() => {
@@ -19,7 +19,7 @@ const AuthLayout = () => {
   return (
     <div className='d-flex flex-column flex-lg-row flex-column-fluid h-100'>
       {/* begin::Body */}
-      <div className='d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-1'>
+      <div className='d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 orders-2 orders-lg-1'>
         {/* begin::Form */}
         <div className='d-flex flex-center flex-column flex-lg-row-fluid'>
           {/* begin::Wrapper */}
@@ -54,8 +54,8 @@ const AuthLayout = () => {
 
       {/* begin::Aside */}
       <div
-        className='d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center order-1 order-lg-2'
-        style={{backgroundImage: `url(${toAbsoluteUrl('/media/misc/auth-bg.png')})`}}
+        className='d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center orders-1 orders-lg-2'
+        style={{ backgroundImage: `url(${toAbsoluteUrl('/media/misc/auth-bg.png')})` }}
       >
         {/* begin::Content */}
         <div className='d-flex flex-column flex-center py-15 px-5 px-md-15 w-100'>
@@ -101,4 +101,4 @@ const AuthLayout = () => {
   )
 }
 
-export {AuthLayout}
+export { AuthLayout }

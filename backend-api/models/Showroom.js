@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import db from "../config/Database.js";
+import Orders from "./Orders.js";
 
 const Showroom = db.define(
   "showroom",
@@ -27,9 +28,13 @@ const Showroom = db.define(
     },
   },
   {
-    tableName: "showrooms",
+    tableName: "showroom",
     timestamps: false,
     underscored: true,
   }
 );
+
+Showroom.hasMany(Orders, { foreignKey: "showroom_id" });
+Orders.belongsTo(Showroom, { foreignKey: "showroom_id" });
+
 export default Showroom;

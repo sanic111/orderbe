@@ -2,37 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from '../../axios';
 import { useNavigate } from 'react-router-dom';
 import './TestDrive.css';
+import { useSelector } from 'react-redux';
 
 const TestDrive = () => {
     const navigate = useNavigate();
     const [carInfo, setCarInfo] = useState(null);
-    const [customerData, setCustomerData] = useState({
-        fullname: '',
-        email: '',
-        phone_number: '',
-        address: '',
-    });
     const [testDriveDate, setTestDriveDate] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-
-    useEffect(() => {
-        const fetchUserProfile = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await axios.get('customer/profile', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setCustomerData(response.data);
-            } catch (error) {
-                console.error('Error fetching profile:', error);
-            }
-        };
-
-        fetchUserProfile();
-    }, []);
+    const user = useSelector((state) => state.auth.user); // Use user from Redux store
 
     useEffect(() => {
         const selectedCar = JSON.parse(localStorage.getItem('selectedCar'));
@@ -61,11 +39,8 @@ const TestDrive = () => {
         }
 
         try {
-            console.log(customerData);
-            console.log(carInfo);
-            console.log(testDriveDate);
             const response = await axios.post('/test-drive-request', {
-                customer_id: customerData.id,
+                customer_id: user.id, // Use user from Redux store
                 car_id: carInfo.id,
                 test_drive_date: testDriveDate
             });
@@ -97,7 +72,7 @@ const TestDrive = () => {
                     <input
                         type="text"
                         id="name"
-                        value={customerData.fullname}
+                        value={user.fullname} // Use user from Redux store
                         disabled
                     />
                 </div>
@@ -107,7 +82,7 @@ const TestDrive = () => {
                     <input
                         type="email"
                         id="email"
-                        value={customerData.email}
+                        value={user.email} // Use user from Redux store
                         disabled
                     />
                 </div>
@@ -117,7 +92,7 @@ const TestDrive = () => {
                     <input
                         type="text"
                         id="phone"
-                        value={customerData.phone_number}
+                        value={user.phone_number} // Use user from Redux store
                         disabled
                     />
                 </div>

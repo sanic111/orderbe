@@ -1,15 +1,15 @@
 /* eslint-disable react/jsx-no-target-blank */
-import {useEffect} from 'react'
-import {ILayout, useLayout} from '../../core'
+import { useEffect } from 'react'
+import { ILayout, useLayout } from '../../core'
 
 const Footer = () => {
-  const {config} = useLayout()
+  const { config } = useLayout()
   useEffect(() => {
     updateDOM(config)
   }, [config])
   return (
     <>
-      <div className='text-dark order-2 order-md-1'>
+      <div className='text-dark orders-2 orders-md-1'>
         <span className='text-muted fw-semibold me-1'>
           {new Date().getFullYear().toString()}&copy;
         </span>
@@ -22,7 +22,7 @@ const Footer = () => {
         </a>
       </div>
 
-      <ul className='menu menu-gray-600 menu-hover-primary fw-semibold order-1'>
+      <ul className='menu menu-gray-600 menu-hover-primary fw-semibold orders-1'>
         <li className='menu-item'>
           <a href='https://junoo.net/' target='_blank' className='menu-link px-2'>
             About
@@ -44,4 +44,4 @@ const updateDOM = (config: ILayout) => {
   }
 }
 
-export {Footer}
+export { Footer }

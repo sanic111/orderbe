@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../axios';
 import './auth.css'; // Importing the same CSS used for the Login page
+import { toast } from 'react-toastify';
 
 function Register() {
     const navigate = useNavigate();
@@ -76,7 +77,7 @@ function Register() {
                 })
                 .then((response) => {
                     navigate('/login');
-                    alert('Successfully created user');
+                    toast('Successfully created user');
                 })
                 .catch((error) => {
                     console.error(error.response.data);

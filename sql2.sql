@@ -400,7 +400,7 @@ CREATE TABLE `orders`  (
   CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`sales_staff_id`) REFERENCES `staffs` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `orders_ibfk_4` FOREIGN KEY (`technical_staff_id`) REFERENCES `staffs` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `orders_ibfk_5` FOREIGN KEY (`insurance_staff_id`) REFERENCES `staffs` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `orders_ibfk_6` FOREIGN KEY (`showroom_id`) REFERENCES `showrooms` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `orders_ibfk_6` FOREIGN KEY (`showroom_id`) REFERENCES `showroom` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `orders_ibfk_7` FOREIGN KEY (`loan_id`) REFERENCES `loans` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `orders_ibfk_8` FOREIGN KEY (`discount_id`) REFERENCES `vouchers` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci;
@@ -412,10 +412,10 @@ BEGIN;
 COMMIT;
 
 -- ----------------------------
--- Table structure for showrooms
+-- Table structure for showroom
 -- ----------------------------
-DROP TABLE IF EXISTS `showrooms`;
-CREATE TABLE `showrooms`  (
+DROP TABLE IF EXISTS `showroom`;
+CREATE TABLE `showroom`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `address` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
@@ -427,10 +427,10 @@ CREATE TABLE `showrooms`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci;
 
 -- ----------------------------
--- Records of showrooms
+-- Records of showroom
 -- ----------------------------
 BEGIN;
-INSERT INTO `showrooms` (`id`, `name`, `address`, `phone_number`, `email`, `created_at`, `updated_at`) VALUES (1, '1S', '94-96 Phạm Đình Hổ, P2, Q6, HCM', '0987654321', 'hyundai@gmail.com', '2024-09-13 18:34:18', '2024-09-13 18:34:18');
+INSERT INTO `showroom` (`id`, `name`, `address`, `phone_number`, `email`, `created_at`, `updated_at`) VALUES (1, '1S', '94-96 Phạm Đình Hổ, P2, Q6, HCM', '0987654321', 'hyundai@gmail.com', '2024-09-13 18:34:18', '2024-09-13 18:34:18');
 COMMIT;
 
 -- ----------------------------
@@ -472,7 +472,7 @@ CREATE TABLE `staffs`  (
   INDEX `fk_insurance_provider`(`insurance_provider_id` ASC) USING BTREE,
   CONSTRAINT `fk_insurance_provider` FOREIGN KEY (`insurance_provider_id`) REFERENCES `insurance_providers` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `staffs_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `staff_roles` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `staffs_ibfk_2` FOREIGN KEY (`showroom_id`) REFERENCES `showrooms` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `staffs_ibfk_2` FOREIGN KEY (`showroom_id`) REFERENCES `showroom` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci;
 
 -- ----------------------------

@@ -15,13 +15,13 @@ export const getAllOrders = async (req, res) => {
 
 export const getOrderById = async (req, res) => {
     try {
-        const order = await Orders.findByPk(req.params.id, {
+        const orders = await Orders.findByPk(req.params.id, {
             include: ['orderDetails', 'car']
         });
-        if (order) {
-            res.status(200).json(order);
+        if (orders) {
+            res.status(200).json(orders);
         } else {
-            res.status(404).json({ message: 'Order not found' });
+            res.status(404).json({ message: 'Orders not found' });
         }
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -46,22 +46,7 @@ export const updateOrder = async (req, res) => {
             const updatedOrder = await Orders.findByPk(req.params.id);
             res.status(200).json(updatedOrder);
         } else {
-            res.status(404).json({ message: 'Order not found' });
-        }
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-export const deleteOrder = async (req, res) => {
-    try {
-        const deleted = await Orders.destroy({
-            where: { id: req.params.id }
-        });
-        if (deleted) {
-            res.status(204).send("Order deleted");
-        } else {
-            res.status(404).json({ message: 'Order not found' });
+            res.status(404).json({ message: 'Orders not found' });
         }
     } catch (error) {
         res.status(500).json({ error: error.message });

@@ -1,21 +1,21 @@
-import {ShowroomModel, Staff} from "../core/models";
-import React, {FC, useEffect, useState} from "react";
-import {Link, Outlet, useNavigate, useParams} from 'react-router-dom'
-import {getRoles, getShowrooms, getStaff, updateStaff, updateStaffAvatar} from "../core/requests";
-import {QueryResponse} from "../../../utils/model/models";
-import {toast} from "react-toastify";
-import {KTIcon} from "../../../../_metronic/helpers";
-import {RoleModel} from "../../auth";
+import { ShowroomModel, Staff } from "../core/models";
+import React, { FC, useEffect, useState } from "react";
+import { Link, Outlet, useNavigate, useParams } from 'react-router-dom'
+import { getRoles, getShowroom, getStaff, updateStaff, updateStaffAvatar } from "../core/requests";
+import { QueryResponse } from "../../../utils/model/models";
+import { toast } from "react-toastify";
+import { KTIcon } from "../../../../_metronic/helpers";
+import { RoleModel } from "../../auth";
 
 type Props = {};
-export const StaffEdit: FC<Props> = ({...props}) => {
-    const {id} = useParams(); // Lấy ID từ URL
+export const StaffEdit: FC<Props> = ({ ...props }) => {
+    const { id } = useParams(); // Lấy ID từ URL
     const navigate = useNavigate();
     const [staff, setStaff] = useState<Staff | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [roles, setRoles] = useState<RoleModel[]>([]);
-    const [showrooms, setShowrooms] = useState<ShowroomModel[]>([]);
+    const [showroom, setShowroom] = useState<ShowroomModel[]>([]);
     const getStaffData = () => {
         if (id) {
             getStaff(id)
@@ -71,12 +71,12 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                     progress: undefined,
                 });
             });
-        getShowrooms()
+        getShowroom()
             .then((response: QueryResponse) => {
-                setShowrooms(response.data || []);
+                setShowroom(response.data || []);
             })
             .catch(() => {
-                toast.error('Có lỗi xảy ra khi lấy danh sách showrooms', {
+                toast.error('Có lỗi xảy ra khi lấy danh sách showroom', {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -99,7 +99,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                     const staffData = response.data;
                     if (staffData && !Array.isArray(staffData)) {
                         setStaff(staffData);
-                        setStaff({...staff, password: ""})
+                        setStaff({ ...staff, password: "" })
                         toast.success('Cập nhật thông tin thành công', {
                             position: "top-right",
                             autoClose: 3000,
@@ -210,11 +210,11 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                         <div className='me-7 mb-4'>
                             <div className='symbol symbol-100px symbol-lg-150px symbol-fixed position-relative'>
                                 <img src={staff?.avatar_url || '/media/avatars/default-avatar.jpg'} alt='Avatar'
-                                     onClick={handleImageClick}/>
+                                    onClick={handleImageClick} />
                                 <input
                                     type="file"
                                     id="file-input-avatar"
-                                    style={{display: 'none'}}
+                                    style={{ display: 'none' }}
                                     accept="image/*"
                                     onChange={handleImageChange}
                                 />
@@ -232,7 +232,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                                             {staff?.fullname}
                                         </a>
                                         <a href='#'>
-                                            <KTIcon iconName='verify' className='fs-1 text-primary'/>
+                                            <KTIcon iconName='verify' className='fs-1 text-primary' />
                                         </a>
 
                                     </div>
@@ -242,21 +242,21 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                                             href='#'
                                             className='d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2'
                                         >
-                                            <KTIcon iconName='profile-circle' className='fs-4 me-1'/>
+                                            <KTIcon iconName='profile-circle' className='fs-4 me-1' />
                                             {staff?.role?.name}
                                         </a>
                                         <a
                                             href='#'
                                             className='d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2'
                                         >
-                                            <KTIcon iconName='geolocation' className='fs-4 me-1'/>
+                                            <KTIcon iconName='geolocation' className='fs-4 me-1' />
                                             {staff?.showroom?.name}
                                         </a>
                                         <a
                                             href='#'
                                             className='d-flex align-items-center text-gray-400 text-hover-primary mb-2'
                                         >
-                                            <KTIcon iconName='sms' className='fs-4 me-1'/>
+                                            <KTIcon iconName='sms' className='fs-4 me-1' />
                                             {staff?.email}
                                         </a>
                                     </div>
@@ -306,7 +306,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                     </div>
                 </div>
             </div>
-            <Outlet/>
+            <Outlet />
             <div className='card mb-5 mb-xl-10' id='kt_profile_details_view'>
                 <div className='card-header cursor-pointer'>
                     <div className='card-title m-0'>
@@ -323,7 +323,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                                 type="text"
                                 className='form-control'
                                 value={staff?.fullname || ''}
-                                onChange={(e) => setStaff({...staff, fullname: e.target.value})}
+                                onChange={(e) => setStaff({ ...staff, fullname: e.target.value })}
                             />
                         </div>
                     </div>
@@ -335,7 +335,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                                 type="text"
                                 className='form-control'
                                 value={staff?.phone_number || ''}
-                                onChange={(e) => setStaff({...staff, phone_number: e.target.value})}
+                                onChange={(e) => setStaff({ ...staff, phone_number: e.target.value })}
                             />
                         </div>
                     </div>
@@ -349,7 +349,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                                 type='email'
                                 className='form-control'
                                 value={staff?.email || ''}
-                                onChange={(e) => setStaff({...staff, email: e.target.value})}
+                                onChange={(e) => setStaff({ ...staff, email: e.target.value })}
                             />
                         </div>
 
@@ -362,7 +362,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                                 value={staff?.role_id || ''}
                                 onChange={(e) => {
                                     const selectedRoleId = Number(e.target.value);
-                                    setStaff({...staff, role_id: selectedRoleId});
+                                    setStaff({ ...staff, role_id: selectedRoleId });
                                 }}
                             >
                                 <option value=''>Select role</option>
@@ -384,11 +384,11 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                                 value={staff?.showroom_id || ''}
                                 onChange={(e) => {
                                     const selectedShowroomId = Number(e.target.value);
-                                    setStaff({...staff, showroom_id: selectedShowroomId});
+                                    setStaff({ ...staff, showroom_id: selectedShowroomId });
                                 }}
                             >
                                 <option value=''>Select Showroom</option>
-                                {showrooms.map((showroom) => (
+                                {showroom.map((showroom) => (
                                     <option key={showroom.id} value={showroom.id}>
                                         {showroom.name}
                                     </option>
@@ -414,7 +414,7 @@ export const StaffEdit: FC<Props> = ({...props}) => {
                                 className='form-control'
                                 placeholder="Nhập mật khẩu mới"
                                 value={staff?.password || ''}
-                                onChange={(e) => setStaff({...staff, password: e.target.value})}
+                                onChange={(e) => setStaff({ ...staff, password: e.target.value })}
                             />
                         </div>
 

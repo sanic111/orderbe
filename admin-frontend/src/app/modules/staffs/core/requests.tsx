@@ -1,7 +1,7 @@
-import axios, {AxiosResponse} from "axios";
-import {QueryResponse} from "../../../utils/model/models";
-import {ID} from "../../../../_metronic/helpers";
-import {Staff} from "./models";
+import axios, { AxiosResponse } from "axios";
+import { QueryResponse } from "../../../utils/model/models";
+import { ID } from "../../../../_metronic/helpers";
+import { Staff } from "./models";
 
 const API_URL = process.env.REACT_APP_API_URL
 const STAFF_URL = `${API_URL}/staffs`
@@ -12,7 +12,7 @@ export const getStaffs = (query: string): Promise<QueryResponse> => {
 export const deleteStaff = (staffIds: Array<ID>): Promise<QueryResponse> => {
     return axios
         .delete(`${STAFF_URL}/delete`, {
-            data: {ids: staffIds} // Chuyển mảng ID trong payload (nếu API yêu cầu)
+            data: { ids: staffIds } // Chuyển mảng ID trong payload (nếu API yêu cầu)
         })
         .then((response: AxiosResponse<QueryResponse>) => response.data);
 };
@@ -37,9 +37,9 @@ export const getRoles = (): Promise<QueryResponse> => {
         .get(`${API_URL}/roles`)
         .then((response: AxiosResponse<QueryResponse>) => response.data);
 }
-export const getShowrooms = (): Promise<QueryResponse> => {
+export const getShowroom = (): Promise<QueryResponse> => {
     return axios
-        .get(`${API_URL}/showrooms`)
+        .get(`${API_URL}/showroom`)
         .then((response: AxiosResponse<QueryResponse>) => response.data);
 }
 export const updateStaffAvatar = (id: string | undefined, formData: FormData): Promise<QueryResponse> => {

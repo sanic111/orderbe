@@ -44,6 +44,9 @@ export function numberToWords(number) {
     if (number < 50000000) {
         return 'Số tiền không hợp lệ. Vui lòng nhập số từ 50 triệu đồng trở lên.';
     }
+    else if (number > 1000000000) {
+        return 'Số tiền không hợp lệ. Tối đa chỉ được vay 1 tỷ đồng.';
+    }
 
     if (number === 0) return 'không đồng';
 

@@ -1,6 +1,6 @@
-import {createContext, Dispatch, SetStateAction, useEffect, useState} from 'react'
+import { createContext, Dispatch, SetStateAction, useEffect, useState } from 'react'
 import qs from 'qs'
-import {ID, QueryResponseContextProps, QueryState} from './models'
+import { ID, QueryResponseContextProps, QueryState } from './models'
 
 function createResponseContext<T>(initialState: QueryResponseContextProps<T>) {
     return createContext(initialState)
@@ -10,12 +10,12 @@ function isNotEmpty(obj: unknown) {
     return obj !== undefined && obj !== null && obj !== ''
 }
 
-// Example: page=1&items_per_page=10&sort=id&order=desc&search=a&filter_name=a&filter_online=false
+// Example: page=1&items_per_page=10&sort=id&orders=desc&search=a&filter_name=a&filter_online=false
 function stringifyRequestQuery(state: QueryState): string {
-    const pagination = qs.stringify(state, {filter: ['page', 'items_per_page'], skipNulls: true})
-    const sort = qs.stringify(state, {filter: ['sort', 'order'], skipNulls: true})
+    const pagination = qs.stringify(state, { filter: ['page', 'items_per_page'], skipNulls: true })
+    const sort = qs.stringify(state, { filter: ['sort', 'orders'], skipNulls: true })
     const search = isNotEmpty(state.search)
-        ? qs.stringify(state, {filter: ['search'], skipNulls: true})
+        ? qs.stringify(state, { filter: ['search'], skipNulls: true })
         : ''
 
     const filter = state.filter

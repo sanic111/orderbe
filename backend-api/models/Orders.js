@@ -1,8 +1,6 @@
 import { DataTypes } from "sequelize";
 import db from "../config/Database.js";
-
 import OrderDetails from "./OrderDetails.js";
-
 
 
 const Orders = db.define("orders", {
@@ -33,9 +31,8 @@ const Orders = db.define("orders", {
         type: DataTypes.INTEGER,
     },
     order_status: {
-        type: DataTypes.ENUM('pending', 'completed', 'cancelled'), // Giả định các trạng thái có thể
+        type: DataTypes.ENUM('pending', 'completed', 'cancelled'),
     },
-
     showroom_id: {
         type: DataTypes.INTEGER,
     },
@@ -54,15 +51,13 @@ const Orders = db.define("orders", {
         defaultValue: DataTypes.NOW,
     },
 },
-
     {
         tableName: 'orders',
         timestamps: true,
         underscored: true,
         createdAt: 'created_at',
         updatedAt: 'updated_at',
-    }
-);
+    });
 
 Orders.hasMany(OrderDetails, {
     foreignKey: "order_id",
@@ -71,9 +66,8 @@ Orders.hasMany(OrderDetails, {
 
 OrderDetails.belongsTo(Orders, {
     foreignKey: "order_id",
-    as: "order",
+    as: "orders",
 });
-
 
 
 
